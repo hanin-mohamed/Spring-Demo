@@ -4,13 +4,13 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git branch: 'main', url: 'git@github.com:hanin-mohamed/Spring-Demo.git'
+                git branch: 'main', url: 'https://github.com/hanin-mohamed/Spring-Demo'
             }
         }
 
         stage('Build with Maven') {
             steps {
-                sh './mvnw clean package'
+                sh './mvn clean package'
             }
         }
 
