@@ -7,10 +7,14 @@ pipeline {
             }
         }
         stage('Build with Maven') {
-            steps {
-                withMaven(maven: 'Maven3') {
-                    sh 'mvn clean package'
+            agent {
+                docker {
+                    image 'maven:3.8.5-openjdk-17'
+                    args '--network host'
                 }
+            }
+            steps {
+                sh 'mvn clean package'
             }
         }
         stage('Build Docker Image') {
