@@ -15,11 +15,11 @@ pipeline {
                 }
             }
         }
-//         stage('Build Docker Image') {
-//             steps {
-//                 sh 'docker build -t demo-spring-app .'
-//             }
-//         }
+        stage('Build Docker Image') {
+            steps {
+                sh 'docker build -t demo-spring-app .'
+            }
+        }
 //         stage('Run Docker Container') {
 //             steps {
 //                 sh 'docker stop spring-container || true'
