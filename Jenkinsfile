@@ -10,7 +10,7 @@ pipeline {
 
         stage('Build with Maven') {
             steps {
-                sh './mvn clean package'
+                sh 'mvn clean package'
             }
         }
 
@@ -22,7 +22,7 @@ pipeline {
 
         stage('Run Docker Container') {
             steps {
-                sh 'docker run -d -p 8081:8081 --name spring-container demo-spring-app'
+                sh 'docker run -d -p 8082:8081 --name spring-container demo-spring-app'
             }
         }
     }
