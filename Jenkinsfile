@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        DOCKER_IMAGE = 'demo-spring-app'
+        CONTAINER_NAME = 'spring-container'
+    }
+
     stages {
         stage('Checkout Code') {
             steps {
@@ -9,20 +14,30 @@ pipeline {
         }
 
         stage('Build with Maven') {
+            agent {
+                docker {
+                    image 'maven:3.8.5-openjdk-17'
+                    args '-v /root/.m2:/root/.m2'
+                }
+            }
             steps {
-                sh 'mvn clean package'
+                sh 'mvn clean install'
             }
         }
 
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t demo-spring-app .'
+                sh 'docker build -t $DOCKER_IMAGE .'
             }
         }
 
         stage('Run Docker Container') {
             steps {
-                sh 'docker run -d -p 8082:8081 --name spring-container demo-spring-app'
+                sh '''
+                docker stop $CONTAINER_NAME || true
+                docker rm $CONTAINER_NAME || true
+                docker run --rm -d -p 8082:8081 --name $CONTAINER_NAME $DOCKER_IMAGE
+                '''
             }
         }
     }
