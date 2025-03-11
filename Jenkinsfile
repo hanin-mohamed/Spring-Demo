@@ -8,11 +8,7 @@ pipeline {
         }
         stage('Build with Maven') {
             steps {
-                script {
-                    docker.image('maven:3.8.5-openjdk-17').inside('--network host') {
-                        sh 'mvn clean package'
-                    }
-                }
+                sh 'docker run --rm -v $(pwd):/app -w /app maven:3.8.5-openjdk-17 mvn clean package'
             }
         }
         stage('Build Docker Image') {
