@@ -1,36 +1,29 @@
 pipeline {
     agent any
-
     environment {
         DOCKER_IMAGE = 'demo-spring-app'
         CONTAINER_NAME = 'spring-container'
     }
-
     stages {
         stage('Checkout Code') {
             steps {
                 git branch: 'main', url: 'https://github.com/hanin-mohamed/Spring-Demo'
             }
         }
-
         stage('Build with Maven') {
-            agent {
-                docker {
-                    image 'maven:3.8.5-openjdk-17'
-                    args '-v /root/.m2:/root/.m2'
+            steps {
+                script {
+                    docker.image('maven:3.8.5-openjdk-17').inside('-v /root/.m2:/root/.m2') {
+                        sh 'mvn clean install'
+                    }
                 }
             }
-            steps {
-                sh 'mvn clean install'
-            }
         }
-
         stage('Build Docker Image') {
             steps {
                 sh 'docker build -t $DOCKER_IMAGE .'
             }
         }
-
         stage('Run Docker Container') {
             steps {
                 sh '''
