@@ -1,28 +1,26 @@
 pipeline {
     agent any
-    environment {
-        DOCKER_IMAGE = 'demo-spring-app'
-        CONTAINER_NAME = 'spring-container'
-    }
     stages {
         stage('Checkout Code') {
             steps {
-                git 'https://github.com/hanin-mohamed/Spring-Demo'
+                git branch: 'main', url: 'https://github.com/hanin-mohamed/Spring-Demo'
             }
         }
         stage('Build with Maven') {
             steps {
-                sh 'mvn clean install'
+                withMaven(maven: 'Maven3') {
+                    sh 'mvn clean package'
+                }
             }
         }
         stage('Build Docker Image') {
             steps {
-                sh "docker build -t ${DOCKER_IMAGE} ."
+                sh 'docker build -t demo-spring-app .'
             }
         }
         stage('Run Docker Container') {
             steps {
-                sh "docker stop ${CONTAINER_NAME} || true && docker rm ${CONTAINER_NAME} || true && docker run -d -p 8082:8081 --name ${CONTAINER_NAME} ${DOCKER_IMAGE}"
+                sh 'docker run -d -p 8081:8081 --name spring-container demo-spring-app'
             }
         }
     }
