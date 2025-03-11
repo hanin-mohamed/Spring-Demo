@@ -26,6 +26,6 @@ pipeline {
 //                 sh 'docker rm spring-container || true'
 //                 sh 'docker run -d -p 8081:8081 --name spring-container demo-spring-app'
 //             }
-        }
+//         }
     }
 }
