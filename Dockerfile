@@ -8,7 +8,6 @@ COPY target/demo-3.4.3.jar /app/demo.jar
 WORKDIR /app
 
 
-# Exposes the port 8080
 EXPOSE 8080
 
 # Runs the JAR file when the container is started
