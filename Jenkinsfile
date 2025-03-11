@@ -20,12 +20,12 @@ pipeline {
                 sh 'docker build -t demo-spring-app .'
             }
         }
-//         stage('Run Docker Container') {
-//             steps {
-//                 sh 'docker stop spring-container || true'
-//                 sh 'docker rm spring-container || true'
-//                 sh 'docker run -d -p 8081:8081 --name spring-container demo-spring-app'
-//             }
-//         }
+        stage('Run Docker Container') {
+            steps {
+                sh 'docker stop spring-container || true'
+                sh 'docker rm spring-container || true'
+                sh 'docker run -d -p 8081:8081 --name spring-container demo-spring-app'
+            }
+        }
     }
 }
